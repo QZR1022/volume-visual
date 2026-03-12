@@ -392,18 +392,22 @@ function LoadVolumeData()
         //  console.log(test);    
     },"text");
     $.get(tf_color_filepath, function(data, status) {
-        if (status == "success"){ 
+        if (status == "success"){
             colorNodes_file.splice(0,colorNodes_file.length);
             var buffer = data.split(/[\s\n]/);
+            buffer = buffer.filter(function(item) { return item.trim() !== ""; });
             var num = parseInt(buffer[0]);
             var k = 1;
-            for(var i = 0;i<num;i++){
-                var node = {cx:parseInt(buffer[k++]),
-                 color:d3.rgb(parseFloat(buffer[k++]),parseFloat(buffer[k++]),parseFloat(buffer[k++]))
-                }; 
-                colorNodes_file.push(node);
-                
-            } 
+            for(var i = 0;i<num && k+2 < buffer.length;i++){
+                var cx = parseInt(buffer[k++]);
+                var r = parseFloat(buffer[k++]);
+                var g = parseFloat(buffer[k++]);
+                var b = parseFloat(buffer[k++]);
+                if (!isNaN(cx) && !isNaN(r) && !isNaN(g) && !isNaN(b)) {
+                    var node = {cx: cx, color: d3.rgb(r, g, b)};
+                    colorNodes_file.push(node);
+                }
+            }
             resetPreferredSetting();
         }
         else colorNodes_file.splice(0,colorNodes_file.length);
@@ -412,20 +416,21 @@ function LoadVolumeData()
         //  console.log(test);    
     },"text");
     $.get(tf_opacity_filepath, function(data, status) {
-        if (status == "success"){ 
+        if (status == "success"){
             opacityNodes_file.splice(0,opacityNodes_file.length);
             var buffer = data.split(/[\s\n]/);
+            buffer = buffer.filter(function(item) { return item.trim() !== ""; });
             var num = parseInt(buffer[0]);
             var k = 1;
-            for(var i = 0;i<num;i++){
-                var node = 
-                {  opacity: parseFloat(buffer[k++]),
-                   cx:  parseFloat(buffer[k++]),
-                   cy:  parseFloat(buffer[k++])
-                };
-             
-                opacityNodes_file.push(node);
-            } 
+            for(var i = 0;i<num && k+2 < buffer.length;i++){
+                var opacity = parseFloat(buffer[k++]);
+                var cx = parseFloat(buffer[k++]);
+                var cy = parseFloat(buffer[k++]);
+                if (!isNaN(opacity) && !isNaN(cx) && !isNaN(cy)) {
+                    var node = {opacity: opacity, cx: cx, cy: cy};
+                    opacityNodes_file.push(node);
+                }
+            }
              resetPreferredSetting();
         }
         else opacityNodes_file.splice(0,opacityNodes_file.length);     
