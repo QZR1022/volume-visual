@@ -1,4 +1,37 @@
 # VolumeVisual
+
+## Quick Start 快速开始
+
+### 1. 启动本地服务器
+
+在终端（PyCharm Terminal 或命令行）输入：
+
+```bash
+cd D:/Git/volume-visual-master
+python -m http.server 8080
+```
+
+### 2. 打开浏览器
+
+在浏览器地址栏输入：
+
+```
+http://localhost:8080/index.html
+```
+
+或
+
+```
+http://localhost:8080/VolumeVisual.html
+```
+
+### ⚠️ 注意事项
+
+- **必须使用 `http://localhost:8080` 方式打开**
+- **不要直接双击 HTML 文件**，否则会导致 CORS 错误，无法加载数据文件
+
+---
+
 VolumeVisual is an educational tool that provides a friendly web interface for students to explore and interact with volume visualizations of a variety of data sets from real-world medical applications and scientific simulations. As the most popular techniques for volume visualization, direct volume rendering and isosurface rendering are utilized to allow users to draw important information from these data sets. Users learn how to compare and evaluate these two different visualization techniques in side-by-side panels, which can be interactively explored by various interactions.
 VolumeVisual is mainly developed with WebGL 2.0. To get better browser compatibility and performance, users are strongly recommended to download the latest version of Chrome, FireFox, or Edge and update Graphics Cards driver to the newest version.
 ## Dependencies
