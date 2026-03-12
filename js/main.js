@@ -1452,9 +1452,120 @@ function glDrawSurface()
           glDrawSurfaceViewPort();
        }  
    
-       requestAnimationFrame(glDrawSurface);   
-       
+       requestAnimationFrame(glDrawSurface);
+
 }
+
+function saveTransferFunction() {
+    var colorNodesData = [];
+    for (var i = 0; i < colorPickerNodes.length; i++) {
+        var node = colorPickerNodes[i];
+        colorNodesData.push({
+            r: node.color.r,
+            g: node.color.g,
+            b: node.color.b,
+            cx: node.cx
+        });
+    }
+
+    var opacityNodesData = [];
+    for (var i = 0; i < opacityNodes.length; i++) {
+        var node = opacityNodes[i];
+        opacityNodesData.push({
+            opacity: node.opacity,
+            cx: node.cx,
+            cy: node.cy
+        });
+    }
+
+    var tfData = {
+        colorNodes: colorNodesData,
+        opacityNodes: opacityNodesData
+    };
+
+    var blob = new Blob([JSON.stringify(tfData, null, 2)], {type: "application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "transferfunction.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function loadTransferFunction(input) {
+    var file = input.files[0];
+    if (!file) return;
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            var tfData = JSON.parse(e.target.result);
+
+            if (tfData.colorNodes && tfData.colorNodes.length > 0) {
+                colorPickerNodes.splice(0, colorPickerNodes.length);
+                channel_svg.selectAll("circle").remove();
+
+                for (var i = 0; i < tfData.colorNodes.length; i++) {
+                    var nodeData = tfData.colorNodes[i];
+                    var nodes = {
+                        color: d3.rgb(nodeData.r, nodeData.g, nodeData.b),
+                        cx: nodeData.cx
+                    };
+                    colorPickerNodes.push(nodes);
+                    channel_svg.append("circle")
+                        .attr("cx", nodeData.cx)
+                        .attr("cy", channel_canvas_height / 2)
+                        .attr("r", circle_ridius)
+                        .style("fill", nodes.color)
+                        .style("stroke", "black")
+                        .style("stroke-width", "2px");
+                }
+                constructColorArray();
+                channel_canvas.each(render);
+            }
+
+            if (tfData.opacityNodes && tfData.opacityNodes.length > 0) {
+                opacityNodes.splice(0, opacityNodes.length);
+                svg3.selectAll("circle").remove();
+
+                for (var i = 0; i < tfData.opacityNodes.length; i++) {
+                    var nodeData = tfData.opacityNodes[i];
+                    var node_opacity = {
+                        opacity: nodeData.opacity,
+                        cx: nodeData.cx,
+                        cy: nodeData.cy
+                    };
+                    opacityNodes.push(node_opacity);
+                    svg3.append("circle")
+                        .attr("cx", nodeData.cx)
+                        .attr("cy", nodeData.cy)
+                        .attr("r", circle_ridius)
+                        .style("fill", "white")
+                        .style("stroke", "black")
+                        .style("stroke-width", "2px");
+                }
+                svg3.append("path")
+                    .attr("d", lineFunc(opacityNodes))
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 2)
+                    .attr("fill", "none");
+                constructOpacityArray();
+            }
+
+            updateTransferFuncArray();
+            if (channel_canvas) channel_canvas.each(render);
+
+            alert("Transfer Function loaded successfully!");
+        } catch (err) {
+            alert("Error loading Transfer Function: " + err.message);
+        }
+    };
+    reader.readAsText(file);
+    input.value = "";
+}
+
 function main() {
 
     console.log("main is called");

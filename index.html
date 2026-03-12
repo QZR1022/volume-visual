@@ -601,6 +601,11 @@
                    </div><!-- volumeDiv1 -->
                    <div id="transferDiv1" class="form-group row">
                          <div class = "container-fluid">
+                             <div class = "row justify-content-center" style="margin-bottom: 10px;">
+                                <button class="btn btn-sm btn-primary mr-2" onclick="saveTransferFunction()">Save TF</button>
+                                <input type="file" id="loadTFFile" style="display:none" accept=".json" onchange="loadTransferFunction(this)">
+                                <button class="btn btn-sm btn-secondary" onclick="document.getElementById('loadTFFile').click()">Load TF</button>
+                             </div>
                              <div class = "row justify-content-center">
                                 <div class = "col-sm-10 mr-5" id = "OpacityContainer"style="margin-left:-50px">
                                   <svg width = "512" height="150" id="svg3" viewBox="0 0 512 150" style = "width: 105%;position: absolute;top:-10px;height: auto; z-index:1" > </svg>  
