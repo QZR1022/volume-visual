@@ -1,28 +1,31 @@
 # VolumeVisual
 
-## Quick Start 快速开始
+## 快速开始
 
-### 1. 启动本地服务器
+### 1. 下载 GitHub 项目
+  https://github.com/QZR1022/volume-visual
+  （点击 Code -> Download ZIP）
 
-在终端（PyCharm Terminal 或命令行）输入：
+### 2. 添加数据文件
+  把这两个文件放到 ZIP 解压后的 volume/ 文件夹里：
+    - H2.dat
+    - PD.dat
+
+  确认 surface 有没有 H2 和 PD 的 .txt 文件
+
+### 3. 启动服务器
+  在终端（PyCharm Terminal 或命令行）输入你存放 volume-visual-main 的地址，然后启动服务器：
 
 ```bash
-cd D:/Git/volume-visual-master
+cd C:\Users\qzr19\Desktop\volume-visual-main
 python -m http.server 8080
 ```
 
-### 2. 打开浏览器
-
-在浏览器地址栏输入：
+### 4. 打开浏览器
+  复制这个链接到浏览器打开：
 
 ```
 http://localhost:8080/index.html
-```
-
-或
-
-```
-http://localhost:8080/VolumeVisual.html
 ```
 
 ### ⚠️ 注意事项
