@@ -456,19 +456,19 @@ function LoadVolumeData()
             var min = 999999;
             var max = -999999;
             for (var i = 0; i < volume_data.length; i++) {
-               
+
                 min = volume_data[i] > min ? min : volume_data[i];
                 max = volume_data[i] > max ? volume_data[i] : max;
             }
             for (var i = 0; i < volume_data.length; i++) {
-                volume_data[i] = (volume_data[i] - min) / (max - min);  
+                volume_data[i] = (volume_data[i] - min) / (max - min);
             }
             drawVolume = 1.0;
             updateVolumeView = 1;
             updateSurfaceView = 1;
-            gl.deleteTexture(volumeTexture);    
+            gl.deleteTexture(volumeTexture);
             volumeTexture = gl.createTexture();
-         
+
              gl.activeTexture(gl.TEXTURE1);
              gl.bindTexture(gl.TEXTURE_3D, volumeTexture);
              gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -476,15 +476,14 @@ function LoadVolumeData()
              gl.texParameterf(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
              gl.texParameterf(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
              gl.texParameterf(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
-             
-             gl.texStorage3D(gl.TEXTURE_3D, 1, gl.R32F, volSizeX, volSizeY, volSizeZ);   
+
+             gl.texStorage3D(gl.TEXTURE_3D, 1, gl.R32F, volSizeX, volSizeY, volSizeZ);
              gl.texSubImage3D(gl.TEXTURE_3D, 0, 0, 0, 0, volSizeX, volSizeY, volSizeZ, gl.RED, gl.FLOAT, volume_data);
 
-          //   gl.texImage3D(gl.TEXTURE_3D, 0, gl.R32F, volSizeX, volSizeY, volSizeZ, 0, gl.RED, gl.FLOAT, volume_data);
              $("#data").removeAttr("disabled");
              document.getElementById('volume_spinner').style.visibility = "hidden";
              oReq = null;
-        
+
         }
     }
    oReq.send(null);
